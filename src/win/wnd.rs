@@ -6,8 +6,14 @@ use libc::{c_int,c_uint, c_void};
 use super::encode::{UTF82UCS2,UCS2TOUTF8};
 use super::types::{MSG};
 
-pub type DWnd = * const c_void;
+struct SWnd{
+	unused:int
+}
 
+unsafe impl Sync for DWnd{}
+pub type DWnd = * const SWnd;
+
+ 
 extern "stdcall"{
   //Window Text
   pub fn GetWindowTextLengthW(hWnd:DWnd)->c_int;

@@ -9,8 +9,6 @@ pub type LPARAM = * const c_void;
 pub type WPARAM = * const c_void;
 
 
-pub static C_NULL:* const c_void = 0 as * const c_void;
-
 pub type WndProc =extern "stdcall" fn (DWnd, u32, WPARAM, LPARAM)->c_int;
 pub type WindowHookfn = extern "stdcall" fn(int,* const c_void, * const c_void)->c_int;
 
@@ -21,6 +19,9 @@ pub struct __WIN_HANDLER{
 
 pub type HMENU = * const __WIN_HANDLER;
 pub type HINSTANCE = * const __WIN_HANDLER;
+pub type HICON = * const __WIN_HANDLER;
+pub type HBRUSH = * const __WIN_HANDLER;
+pub type HCURSOR = * const __WIN_HANDLER;
 
 #[repr(C)]
 pub struct WNDCLASSEXW{
@@ -30,12 +31,12 @@ pub struct WNDCLASSEXW{
   pub cbClsExtra:c_int,
   pub cbWndExtra:c_int,
   pub hInstance:HINSTANCE,
-  pub hIcon:c_int,
-  pub hCursor:c_int,
-  pub hbrBackground:c_int,
+  pub hIcon:HICON,
+  pub hCursor:HCURSOR,
+  pub hbrBackground:HBRUSH,
   pub lpszMenuName:* const u16,
   pub lpszClassName:* const u16,
-  pub hIconSm:c_int,
+  pub hIconSm:HCURSOR,
 }
 
 #[repr(C)]

@@ -10,7 +10,7 @@ use win::encode::*;
 use win::wnd::{TWnd,DWnd};
 use event::eventlistener::{TEventProcesser,EventProcesser};
 use win::types::{
-  INITCOMMONCONTROLSEX,C_NULL,WndProc,POINT,
+  INITCOMMONCONTROLSEX,WndProc,POINT,
   PostQuitMessage,PostMessageW
 };
 use libc::{c_void,c_int};
@@ -44,7 +44,7 @@ impl Dust {
   fn new() -> Dust {
 
     let icex=INITCOMMONCONTROLSEX{dwSize:8,dwICC:16383};
-    let mut hInst = C_NULL as HINSTANCE;
+    let mut hInst = 0 as HINSTANCE;
     let font;
     unsafe{
       font= GetStockObject(17);
@@ -144,7 +144,7 @@ extern "stdcall" fn window_oncreate(code:int,wparam:* const c_void,lparam: * con
             let mut window = wnd.borrow_mut();
             window.setHwnd(wparam as DWnd); //存储句柄.
             // 修改默认窗口过程，在窗口过程中做消息映射.
-            PostMessageW (wparam, 48, (*d.as_unsafe_cell().get()).sysFont as WPARAM, 1 as LPARAM);
+            PostMessageW (wparam as DWnd, 48, (*d.as_unsafe_cell().get()).sysFont as WPARAM, 1 as LPARAM);
             set_window_proc(wparam as DWnd,|w|
               window.setWndProc(w)
             );

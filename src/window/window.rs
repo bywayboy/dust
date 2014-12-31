@@ -4,6 +4,7 @@
 
 use libc::{c_int,c_void};
 
+use std::mem;
 use std::rc::Rc;
 use std::cell::RefCell;
 
@@ -81,25 +82,25 @@ impl Window{
         // InitCommonControls/();
         let handle =GetModuleHandleW(0 as * const u16);
         let cls = WNDCLASSEXW{
-            cbSize: 48,
+            cbSize: mem::size_of::<WNDCLASSEXW>() as u32,
             style:8,
             lpfnWndProc: defWindowProc,
             cbClsExtra:0,
             cbWndExtra:0,
             hInstance:handle,
-            hIcon:0,
-            hCursor:0,
-            hbrBackground:16,
+            hIcon:0 as HICON,
+            hCursor:0 as HCURSOR,
+            hbrBackground:16 as HBRUSH,
             lpszMenuName: 0 as * const u16,
             lpszClassName:wndcls.as_ptr(),
-            hIconSm:0
+            hIconSm:0 as HICON
         };
 
 
         RegisterClassExW(&cls);
         hookWndCreate(win);
 
-        mhWnd = CreateWindowExW(0, wndcls.as_ptr(), UTF82UCS2(title).as_ptr(), 13565952, x , y , w , h , hWndParent, 0 as HMENU, handle, C_NULL);
+        mhWnd = CreateWindowExW(0, wndcls.as_ptr(), UTF82UCS2(title).as_ptr(), 13565952, x , y , w , h , hWndParent, 0 as HMENU, handle, 0 as LPARAM);
         UnHookWndCreate();
         // 默认情况下 显示该窗口
 
